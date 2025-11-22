@@ -78,5 +78,47 @@ namespace CarsApi.Controllers
                 return new { message = ex.Message, result = "" };
             }
         }
+
+        [HttpGet("byid")]
+        public object GetCarById(int id)
+        {
+            try
+            {
+                string sql = "SELECT * FROM `cars` WHERE Id = @id";
+
+                using (var connect = new MySqlConnection(ConnectionString))
+                {
+                    connect.Open();
+
+                    MySqlCommand cmd = new MySqlCommand(sql,connect);
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    MySqlDataReader reader = cmd.ExecuteReader(); 
+
+                    if(reader.Read()==true)
+                    {
+                        var car = new Car
+                        {
+                            Id = reader.GetInt32(0),
+                            Brand = reader.GetString(1),
+                            Type = reader.GetString(2),
+                            Color = reader.GetString(3),
+                            Year = reader.GetInt32(4)
+                        };
+
+                        return Ok(new { message = "Sikeres találat", result = car });
+                    }
+
+                    connect.Close();
+
+                    return NotFound(new { message = "Sikertelen találat", result = "" });
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(new { message = ex.Message, result = "" });
+            }
+        }
     }
 }
