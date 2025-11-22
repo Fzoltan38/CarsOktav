@@ -43,6 +43,27 @@
   },
   {
     "ContainingType": "CarsApi.Controllers.CarsController",
+    "Method": "UpdateCar",
+    "RelativePath": "cars",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "car",
+        "Type": "CarsApi.Car",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CarsApi.Controllers.CarsController",
     "Method": "GetCarById",
     "RelativePath": "cars/byid",
     "HttpMethod": "GET",

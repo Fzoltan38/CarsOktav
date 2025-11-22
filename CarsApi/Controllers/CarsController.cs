@@ -151,5 +151,39 @@ namespace CarsApi.Controllers
                 return BadRequest(new { message = ex.Message, result = "" });
             }
         }
+
+        [HttpPut]
+        public object UpdateCar(int id, Car car) 
+        {
+            try
+            {
+                string sql = "UPDATE `cars` SET `Brand`= @brand,`Type`=@type,`Color`=@color,`Year`=@year WHERE `Id` = @id;";
+
+                using (var connect = new MySqlConnection(ConnectionString))
+                {
+                    connect.Open();
+
+                    MySqlCommand cmd = new MySqlCommand(sql,connect);
+
+                    cmd.Parameters.AddWithValue("@brand", car.Brand);
+                    cmd.Parameters.AddWithValue("@type", car.Type);
+                    cmd.Parameters.AddWithValue("@color", car.Color);
+                    cmd.Parameters.AddWithValue("@year", car.Year);
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    if (cmd.ExecuteNonQuery() > 0)
+                    {
+                        return Ok(new { message = "Sikeres módosítás", result = car });
+                    }
+                    connect.Close();
+
+                    return NotFound(new { message = "Nincs ilyen autó.", result = car });
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message, result = "" });
+            }
+        }
     }
 }
