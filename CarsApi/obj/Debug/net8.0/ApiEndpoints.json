@@ -1,0 +1,18 @@
+[
+  {
+    "ContainingType": "CarsApi.Controllers.CarsController",
+    "Method": "AddNewCar",
+    "RelativePath": "cars",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "car",
+        "Type": "CarsApi.Car",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
