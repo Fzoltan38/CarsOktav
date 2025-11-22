@@ -120,5 +120,36 @@ namespace CarsApi.Controllers
                 return BadRequest(new { message = ex.Message, result = "" });
             }
         }
+
+        [HttpDelete]
+        public object DeleteCarById(int id) 
+        {
+            try
+            {
+                string sql = "DELETE FROM `cars` WHERE Id = @id";
+
+                using (var connect = new MySqlConnection(ConnectionString))
+                {
+                    connect.Open();
+
+                    MySqlCommand cmd = new MySqlCommand(sql,connect);
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    if (cmd.ExecuteNonQuery() > 0)
+                    {
+                        return Ok(new { message = "Sikeres törlés.", result = "" });
+                    }
+
+                    connect.Close();
+
+                    return NotFound(new { message = "Nincs ilyen autó.", result = "" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message, result = "" });
+            }
+        }
     }
 }
