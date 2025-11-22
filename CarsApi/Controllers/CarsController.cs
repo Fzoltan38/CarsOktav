@@ -38,5 +38,45 @@ namespace CarsApi.Controllers
             }
           
         }
+
+        [HttpGet]
+        public object GetCar()
+        {
+            try
+            {
+                List<Car> cars = new List<Car>();
+                string sql = "SELECT * FROM `cars`";
+
+                using (var connect = new MySqlConnection(ConnectionString))
+                {
+                    connect.Open();
+
+                    MySqlCommand cmd = new MySqlCommand(sql,connect);
+
+                    MySqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        var car = new Car 
+                        { 
+                            Id = reader.GetInt32(0),
+                            Brand = reader.GetString(1),
+                            Type = reader.GetString(2),
+                            Color = reader.GetString(3),
+                            Year = reader.GetInt32(4)
+                        };
+
+                        cars.Add(car);
+                    }
+                    
+                    connect.Close();
+                    return new { message = "Sikeres lekérdezés", result = cars};
+                }
+            }
+            catch (Exception ex)
+            {
+                return new { message = ex.Message, result = "" };
+            }
+        }
     }
 }
